@@ -26,14 +26,17 @@ public class CommandHandler implements CommandExecutor {
 		return true;
 	}
 
-	public boolean validate(String[] args, CommandSender sender) {
+	public boolean valiDateLength(String[] args, CommandSender sender,Integer n) {
 		// check if there are enough arguments
-		if (args.length != 6) {
-			sender.sendMessage("[FAILED] Unexpected argument length, expected 6 but got " + Integer.toString(args.length) + ".");
+		if (args.length != n) {
+			sender.sendMessage("[FAILED] Unexpected argument length, expected" + n.toString() + "but got " + Integer.toString(args.length) + ".");
 			return false;
 		}
+		return true;
+	}
+	public boolean isNumericBetween(String[] args,CommandSender sender,Integer j,Integer k){
 		// check if the argument types are correct
-		for (int i = 1; i <= 4; i++) {
+		for (int i = j; i <= k; i++) {
 			String arg = args[i];
 			if (!this.isNumeric(arg)) {
 				sender.sendMessage("[FAILED] Argument type incorrect, expected Number but got String.");
@@ -50,10 +53,13 @@ public class CommandHandler implements CommandExecutor {
 
 		if (cmd.getName().equalsIgnoreCase("setspecialzone")) {
 
-			if (!this.validate(args, sender)) {
+			if (!this.valiDateLength(args, sender,6)) {
 				return false;
 			}
-
+			
+			if (!this.isNumericBetween(args,sender,1,4)){
+				return false;
+			}
 			// usage: /setSpecialZone <zonename> <x1> <x2> <z1> <z2> <world_name>
 
 			// it will automatically create the value path if not exists, so there is no
@@ -71,4 +77,4 @@ public class CommandHandler implements CommandExecutor {
 
 		return true;
 	}
-}
+}	
