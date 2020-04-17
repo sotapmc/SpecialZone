@@ -1,65 +1,76 @@
 package org.sotap.SpecialZone;
 
-public class zone {
+import org.bukkit.entity.Player;
+
+public class Zone {
     private SpecialZone plug;
-    String worldname,zonename;
-    double x1,x2,y1,y2,z1,z2;
-    boolean ignore_Y,keepInv,keepExp ;
-    public zone(String[] args,SpecialZone plug){
-        this.zonename=args[0];
-        this.x1=Integer.valueOf(args[1]);
-        this.x2=Integer.valueOf(args[2]);
-        this.y1=Integer.valueOf(args[3]);
-        this.y2=Integer.valueOf(args[4]);
-        this.z1=Integer.valueOf(args[5]);
-        this.z2=Integer.valueOf(args[6]);
-        this.worldname=args[7];
-        //ignore_Y is true when you want to check if a player is in this specialzone without checking his Y coordinate.
-        this.ignore_Y=false;
-        if(args[8].equalsIgnoreCase("true")){
-            this.ignore_Y=true;
+    public String worldname, zonename, error;
+    public double x1, x2, y1, y2, z1, z2;
+    public boolean ignore_Y, keepInv, keepExp;
+
+    public Zone(String[] args, SpecialZone plug) {
+        this.zonename = args[0];
+        this.x1 = Integer.valueOf(args[1]);
+        this.x2 = Integer.valueOf(args[2]);
+        this.y1 = Integer.valueOf(args[3]);
+        this.y2 = Integer.valueOf(args[4]);
+        this.z1 = Integer.valueOf(args[5]);
+        this.z2 = Integer.valueOf(args[6]);
+        this.worldname = args[7];
+        // ignore_Y is true when you want to check if a player is in this specialzone
+        // without checking his Y coordinate.
+        this.ignore_Y = false;
+        if (args[8].equalsIgnoreCase("true")) {
+            this.ignore_Y = true;
             this.plug = plug;
         }
-
 
         this.keepInv = false;
         this.keepExp = false;
     }
 
-    public void setASpecialZone(){
-        plug.getConfig().set("SpecialZone." + zonename + ".x1", x1);
-        plug.getConfig().set("SpecialZone." + zonename + ".x2", x2);
-        plug.getConfig().set("SpecialZone." + zonename + ".y1", y1);
-        plug.getConfig().set("SpecialZone." + zonename + ".y2", y2);
-		plug.getConfig().set("SpecialZone." + zonename + ".z1", z1);
-		plug.getConfig().set("SpecialZone." + zonename + ".z2", z2);
-        plug.getConfig().set("SpecialZone." + zonename + ".world_name", worldname);
-        plug.getConfig().set("SpecialZone." + zonename + ".ignore_Y", ignore_Y);
-		// don't forget to save the configuration
-		plug.saveConfig();
-    }
-
-    public boolean isInZone(double x,double y,double z,String worldname){
-        if (this.ignore_Y){
-            return (this.x1-x)*(this.x2-x)<0 && (this.z1-z)*(this.z2-z)<0 && this.worldname.equalsIgnoreCase(worldname);
+    /**
+     * Constructor for a new zone
+     */
+    public boolean create() {
+        // This won't be removed until we supported zones with the same name but different world_name attributes in the config.yml
+        if (plug.getConfig().contains("SpecialZone." + this.zonename)) {
+            this.error = "There is already a special zone named " + this.zonename + ", we won't do anything now.";
+            return false;
         }
-        return (this.x1-x)*(this.x2-x)<0 && (this.y1-y)*(this.y2-y)<0 && (this.z1-z)*(this.z2-z)<0 && this.worldname.equalsIgnoreCase(worldname);
+        plug.getConfig().set("SpecialZone." + this.zonename + ".x1", this.x1);
+        plug.getConfig().set("SpecialZone." + this.zonename + ".x2", this.x2);
+        plug.getConfig().set("SpecialZone." + this.zonename + ".y1", this.y1);
+        plug.getConfig().set("SpecialZone." + this.zonename + ".y2", this.y2);
+        plug.getConfig().set("SpecialZone." + this.zonename + ".z1", this.z1);
+        plug.getConfig().set("SpecialZone." + this.zonename + ".z2", this.z2);
+        plug.getConfig().set("SpecialZone." + this.zonename + ".world_name", this.worldname);
+        plug.getConfig().set("SpecialZone." + this.zonename + ".ignore_Y", this.ignore_Y);
+        // don't forget to save the configuration
+        plug.saveConfig();
+        return true;
     }
 
+    /**
+     * Check if a player is in `this` zone
+     */
+    public boolean isInZone(Player p) {
+        return Utils.isInZone(this.zonename, p.getLocation().getX() , p.getLocation().getY(), p.getLocation().getZ(), this.worldname, this.ignore_Y, this.plug.getConfig());
+    }
 
-    public void setKeepInv(boolean flag){
+    public void setKeepInv(boolean flag) {
         this.keepInv = flag;
     }
 
-    public boolean getKeepInv(){
+    public boolean getKeepInv() {
         return this.keepInv;
     }
 
-    public void setKeepExp(boolean flag){
+    public void setKeepExp(boolean flag) {
         this.keepInv = flag;
     }
 
-    public boolean getKeepExp(){
+    public boolean getKeepExp() {
         return this.keepExp;
     }
 }
