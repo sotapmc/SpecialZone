@@ -27,3 +27,11 @@ sourceSets {
         }
     }
 }
+
+tasks.withType(GroovyCompile) {   
+    groovyOptions.encoding = "MacRoman"   
+} 
+
+tasks.withType(JavaCompile) {
+options.encoding = "UTF-8"
+}
