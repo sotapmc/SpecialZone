@@ -53,22 +53,19 @@ public class CommandHandler implements CommandExecutor {
 
 		if (cmd.getName().equalsIgnoreCase("setspecialzone")) {
 
-			if (!this.valiDateLength(args, sender,6)) {
+			if (!this.valiDateLength(args, sender,9)) {
 				return false;
 			}
 			
-			if (!this.isNumericBetween(args,sender,1,4)){
+			if (!this.isNumericBetween(args,sender,1,6)){
 				return false;
 			}
 			// usage: /setSpecialZone <zonename> <x1> <x2> <z1> <z2> <world_name>
 
 			// it will automatically create the value path if not exists, so there is no
 			// need to create it manually.
-			this.plug.getConfig().set("SpecialZone." + args[0] + ".x1", args[1]);
-			this.plug.getConfig().set("SpecialZone." + args[0] + ".x2", args[2]);
-			this.plug.getConfig().set("SpecialZone." + args[0] + ".z1", args[3]);
-			this.plug.getConfig().set("SpecialZone." + args[0] + ".z2", args[4]);
-			this.plug.getConfig().set("SpecialZone." + args[0] + ".world_name", args[5]);
+			zone newzone=new zone(args,plug);
+			newzone.setASpecialZone();
 			// don't forget to save the configuration
 			this.plug.saveConfig();
 			sender.sendMessage("[SUCCESS] Successfully set a special zone.");

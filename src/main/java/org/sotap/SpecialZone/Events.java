@@ -1,3 +1,4 @@
+
 package org.sotap.SpecialZone;
 
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -38,6 +39,7 @@ public class Events implements Listener {
 			String compare_worldname = zone.getString("world_name");
 			if (this.isInSpecialZone(compare_x1, compare_x2, compare_z1, compare_z2, compare_worldname, event)) {
 				event.setKeepInventory(true);
+				event.setKeepLevel(true);
 				event.getDrops().clear();
 				event.getEntity().sendMessage("Your inventory was kept up!");
 				break;
