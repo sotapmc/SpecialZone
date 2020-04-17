@@ -19,17 +19,12 @@ public class Events implements Listener {
 		double x = p.getLocation().getX();
 		double y = p.getLocation().getY();
 		double z = p.getLocation().getZ();
-
+		// the ignore_y argument will be configurable very soon.
 		if (Utils.isInZoneGlobal(x, y, z, this.plug.getConfig())) {
 			event.setKeepInventory(true);
 			event.setKeepLevel(true);
 			event.getDrops().clear();
 			event.getEntity().sendMessage("Your inventory was kept up!");
-		} else {
-			event.setKeepInventory(false);
-			event.setKeepLevel(false);
-			// only for test, will be removed in production.
-			this.plug.getLogger().info("Not in zone");
 		}
 	}
 }
