@@ -40,23 +40,25 @@ public class Utils {
      * @param u_x      需要进行判断的坐标 X
      * @param u_y      需要进行判断的坐标 Y
      * @param u_z      需要进行判断的坐标 Z
-     * @param ignore_Y 是否忽略 Y 坐标进行判断
      * @param config   插件的配置对象
      * @return boolean
      */
-    public static boolean isInZoneGlobal(double u_x, double u_y, double u_z, boolean ignore_Y, FileConfiguration config) {
-        ConfigurationSection specialZone = config.getConfigurationSection("SpecialZone");
-        Set<String> zoneNames = specialZone.getKeys(false);
-        for (String key : zoneNames) {
-            ConfigurationSection zone = specialZone.getConfigurationSection(key);
-            Double x1 = zone.getDouble("x1");
-            Double x2 = zone.getDouble("x2");
-            Double y1 = zone.getDouble("y1");
-            Double y2 = zone.getDouble("y2");
-            Double z1 = zone.getDouble("z1");
-            Double z2 = zone.getDouble("z2");
-            return (x1 - u_x) * (x2 - u_x) < 0 && (ignore_Y ? true : (y1 - u_y) * (y2 - u_y) < 0)
-            && (z1 - u_z) * (z2 - u_z) < 0;
+    public static boolean isInZoneGlobal(double u_x, double u_y, double u_z, FileConfiguration config) {
+        if (config.contains("SpecialZone")) {
+            ConfigurationSection specialZone = config.getConfigurationSection("SpecialZone");
+            Set<String> zoneNames = specialZone.getKeys(false);
+            for (String key : zoneNames) {
+                ConfigurationSection zone = specialZone.getConfigurationSection(key);
+                Double x1 = zone.getDouble("x1");
+                Double x2 = zone.getDouble("x2");
+                Double y1 = zone.getDouble("y1");
+                Double y2 = zone.getDouble("y2");
+                Double z1 = zone.getDouble("z1");
+                Double z2 = zone.getDouble("z2");
+                boolean ignore_Y = zone.getBoolean("ignore_Y");
+                return (x1 - u_x) * (x2 - u_x) < 0 && (ignore_Y ? true : (y1 - u_y) * (y2 - u_y) < 0)
+                && (z1 - u_z) * (z2 - u_z) < 0;
+            }
         }
         return false;
     }

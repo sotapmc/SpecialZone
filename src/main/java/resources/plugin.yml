@@ -1,7 +1,7 @@
 name: SpecialZone
 main: org.sotap.SpecialZone.SpecialZone
 version: "1"
-api-version: "1.15"
+api: "1.15"
 author: constant137
 commands: 
   setspecialzone: 
