@@ -1,9 +1,14 @@
 package org.sotap.SpecialZone;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class SpecialZone extends JavaPlugin {
     public CommandHandler executor;
+
+    public void log(String msg) {
+        this.getLogger().info(ChatColor.translateAlternateColorCodes('&', msg));
+    }
 
 	@Override  
     public void onEnable(){
