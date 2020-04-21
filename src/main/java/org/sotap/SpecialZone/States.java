@@ -1,37 +1,45 @@
 package org.sotap.SpecialZone;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Location;
 
 public class States {
-    public static String selectState = "";
+    public static Integer selectState = 0;
     public static List<Location> locations;
 
-    private Integer getIndexBySelection(String selectState) {
-        return selectState == "selection-1" ? 1 : (selectState == "selection-2" ? 2 : 0);
+    public States() {
+        locations = new ArrayList<Location>();
+        locations.add(0, null);
+        locations.add(1, null);
+        locations.add(2, null);
     }
 
     public void nextSelectState() {
-        String selectStatePrev = States.selectState;
-        if (selectStatePrev == "selection-2") {
+        if (selectState == 2) {
             this.resetSelectState();
+        } else {
+            selectState += 1;
         }
-        selectState = selectStatePrev == "" ? "selection-1" : (selectStatePrev == "selection-1" ? "selection-2" : "");    
     }
 
     public void resetSelectState() {
-        selectState = "";
+        selectState = 1;
         locations.clear();
+        // add placeholders to prevent nullpointerexception
+        locations.add(0, null);
+        locations.add(1, null);
+        locations.add(2, null);
     }
 
-    public void storeLocation(String selectState, Location location) {
-        locations.set(this.getIndexBySelection(selectState), location);
+    public void storeLocation(Location location) {
+        locations.add(selectState, location);
     }
 
-    public Location getLocation(String selectState) {
+    public Location getLocation(Integer selectState) {
         try {
-            return locations.get(this.getIndexBySelection(selectState));
+            return locations.get(selectState);
         } catch (IndexOutOfBoundsException e) {
             return null;
         }
