@@ -7,4 +7,4 @@ commands:
   setspecialzone: 
     permission: sz.set
     description: Set a specialzone.
-    usage: /setspecialzone <zonename> <x1> <x2> <y1> <y2> <z1> <z2> <world_name> <ignore_y?>
+    usage: /setspecialzone <zonename> <ignore_y?>
