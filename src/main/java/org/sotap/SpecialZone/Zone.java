@@ -27,6 +27,7 @@ public class Zone {
         this.ignore_Y = ignore_Y;
         this.keepInv = false;
         this.keepExp = false;
+        this.plug = plug;
     }
 
     /**
@@ -34,20 +35,20 @@ public class Zone {
      */
     public boolean create() {
         // This won't be removed until we supported zones with the same name but different world_name attributes in the config.yml
-        if (plug.getConfig().contains("SpecialZone." + this.zonename)) {
+        if (this.plug.getConfig().contains("SpecialZone." + this.zonename)) {
             this.error = "There is already a special zone named " + this.zonename + ", we won't do anything now.";
             return false;
         }
-        plug.getConfig().set("SpecialZone." + this.zonename + ".x1", this.x1);
-        plug.getConfig().set("SpecialZone." + this.zonename + ".x2", this.x2);
-        plug.getConfig().set("SpecialZone." + this.zonename + ".y1", this.y1);
-        plug.getConfig().set("SpecialZone." + this.zonename + ".y2", this.y2);
-        plug.getConfig().set("SpecialZone." + this.zonename + ".z1", this.z1);
-        plug.getConfig().set("SpecialZone." + this.zonename + ".z2", this.z2);
-        plug.getConfig().set("SpecialZone." + this.zonename + ".world_name", this.worldname);
-        plug.getConfig().set("SpecialZone." + this.zonename + ".ignore_Y", this.ignore_Y);
+        this.plug.getConfig().set("SpecialZone." + this.zonename + ".x1", this.x1);
+        this.plug.getConfig().set("SpecialZone." + this.zonename + ".x2", this.x2);
+        this.plug.getConfig().set("SpecialZone." + this.zonename + ".y1", this.y1);
+        this.plug.getConfig().set("SpecialZone." + this.zonename + ".y2", this.y2);
+        this.plug.getConfig().set("SpecialZone." + this.zonename + ".z1", this.z1);
+        this.plug.getConfig().set("SpecialZone." + this.zonename + ".z2", this.z2);
+        this.plug.getConfig().set("SpecialZone." + this.zonename + ".world_name", this.worldname);
+        this.plug.getConfig().set("SpecialZone." + this.zonename + ".ignore_Y", this.ignore_Y);
         // don't forget to save the configuration
-        plug.saveConfig();
+        this.plug.saveConfig();
         return true;
     }
 
