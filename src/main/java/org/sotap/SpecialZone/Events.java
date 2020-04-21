@@ -2,10 +2,13 @@ package org.sotap.SpecialZone;
 
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
@@ -36,13 +39,20 @@ public class Events implements Listener {
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		Action action = event.getAction();
-		if (action == Action.RIGHT_CLICK_BLOCK) {
-			this.state.nextSelectState();
-			Block block = event.getClickedBlock();
-			Location location = block.getLocation();
-			this.state.storeLocation(States.selectState, location);
+		ItemStack item = event.getItem();
+		if (item == null) {
+			// do nothing
 		} else {
-			this.state.resetSelectState();
+			Material mat = item.getType();
+			if (action == Action.RIGHT_CLICK_BLOCK && mat == Material.ARROW) {
+				this.state.nextSelectState();
+				Block block = event.getClickedBlock();
+				Location location = block.getLocation();
+				this.state.storeLocation(location);
+				event.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', ("[&bACTION&r] Successfully select the &a" + (States.selectState == 1 ? "first" : "second") + "&r point of the zone." + (States.selectState == 2 ? " &aEnter &e/specialzone create <name> <ignoreY?>&a to create." : ""))));
+			} else {
+				this.state.resetSelectState();
+			}
 		}
 	}
 }
