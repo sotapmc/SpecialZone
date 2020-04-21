@@ -61,25 +61,27 @@ public class CommandHandler implements CommandExecutor {
 		this.sender = (Player) sender;
 		if (cmd.getName().equalsIgnoreCase("setspecialzone")) {	
 			if (args[0] == "reload") {
-				this.plug.reloadConfig();
-				return true;
+				
 			}
 
-			if (!this.validateLength(args, 9) || args.length != 2) {
+			if (args.length != 2 && args[0] != "reload") {
 				return false;
-			}
-			
-			if (!(States.locations.get(1) instanceof Location && States.locations.get(2) instanceof Location)) {
-				this.send("[&cFAILED&r] You are not selecting the zone correctly.");
-			}
-			// usage: /setSpecialZone <zonename> <ignore_Y>
-			Zone newzone = new Zone(args[0], this.sender.getWorld().getName(), States.locations, Boolean.parseBoolean(args[1]), this.plug);
-			if(newzone.create()) {
-				this.send("[&aSUCCESS&r] Successfully set a special zone.");
+			} else if (args[0] == "reload") {
+				this.plug.reloadConfig();
+				return true;
 			} else {
-				this.send("[&cFAILED&r] Unable to create a special zone. Reason: " + newzone.error + ".");
+				if (!(States.locations.get(1) instanceof Location && States.locations.get(2) instanceof Location)) {
+					this.send("[&cFAILED&r] You are not selecting the zone correctly.");
+				}
+				// usage: /setSpecialZone <zonename> <ignore_Y>
+				Zone newzone = new Zone(args[0], this.sender.getWorld().getName(), States.locations, Boolean.parseBoolean(args[1]), this.plug);
+				
+				if (newzone.create()) {
+					this.send("[&aSUCCESS&r] Successfully set a special zone.");
+				} else {
+					this.send("[&cFAILED&r] Unable to create a special zone. Reason: " + newzone.error + ".");
+				}
 			}
-			
 			return true;
 		}
 
