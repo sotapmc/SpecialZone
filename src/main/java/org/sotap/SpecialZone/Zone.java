@@ -1,30 +1,30 @@
 package org.sotap.SpecialZone;
 
+import java.util.List;
+
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public class Zone {
     private SpecialZone plug;
     public String worldname, zonename, error;
-    public double x1, x2, y1, y2, z1, z2;
     public boolean ignore_Y, keepInv, keepExp;
+    public double x1, x2, y1, y2, z1, z2;
 
-    public Zone(String[] args, SpecialZone plug) {
-        this.zonename = args[0];
-        this.x1 = Integer.valueOf(args[1]);
-        this.x2 = Integer.valueOf(args[2]);
-        this.y1 = Integer.valueOf(args[3]);
-        this.y2 = Integer.valueOf(args[4]);
-        this.z1 = Integer.valueOf(args[5]);
-        this.z2 = Integer.valueOf(args[6]);
-        this.worldname = args[7];
+    public Zone(String zonename, String worldname, List<Location> locations, boolean ignore_Y, SpecialZone plug) {
+        this.zonename = zonename;
+        Location loc1 = locations.get(1);
+        Location loc2 = locations.get(2);
+        this.x1 = loc1.getX();
+        this.x2 = loc2.getX();
+        this.y1 = loc1.getY();
+        this.y2 = loc2.getY();
+        this.z1 = loc1.getZ();
+        this.z2 = loc2.getZ();
+        this.worldname = worldname;
         // ignore_Y is true when you want to check if a player is in this specialzone
         // without checking his Y coordinate.
-        this.ignore_Y = false;
-        if (args[8].equalsIgnoreCase("true")) {
-            this.ignore_Y = true;
-            this.plug = plug;
-        }
-
+        this.ignore_Y = ignore_Y;
         this.keepInv = false;
         this.keepExp = false;
     }
