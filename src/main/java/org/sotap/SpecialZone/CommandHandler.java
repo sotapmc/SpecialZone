@@ -51,7 +51,7 @@ public class CommandHandler implements CommandExecutor {
 		}
 		return true;
 	}
-	
+
 	public void send(String msg) {
 		this.sender.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
 	}
@@ -59,29 +59,33 @@ public class CommandHandler implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		this.sender = (Player) sender;
-		if (cmd.getName().equalsIgnoreCase("setspecialzone")) {	
-			if (args[0] == "reload") {
-				
+		if (cmd.getName().equalsIgnoreCase("setspecialzone")) {
+			if (args.length != 3) {
+				return false;
 			}
 
-			if (args.length != 2 && args[0] != "reload") {
-				return false;
-			} else if (args[0] == "reload") {
-				this.plug.reloadConfig();
-				return true;
-			} else {
-				if (!(States.locations.get(1) instanceof Location && States.locations.get(2) instanceof Location)) {
-					this.send("[&cFAILED&r] You are not selecting the zone correctly.");
-				}
-				// usage: /setSpecialZone <zonename> <ignore_Y>
-				Zone newzone = new Zone(args[0], this.sender.getWorld().getName(), States.locations, Boolean.parseBoolean(args[1]), this.plug);
-				
-				if (newzone.create()) {
-					this.send("[&aSUCCESS&r] Successfully set a special zone.");
-				} else {
-					this.send("[&cFAILED&r] Unable to create a special zone. Reason: " + newzone.error + ".");
-				}
+			switch (args[0]) {
+				case "create":
+					if (!(States.locations.get(1) instanceof Location && States.locations.get(2) instanceof Location)) {
+						this.send("[&cFAILED&r] You are not selecting the zone correctly.");
+					}
+					Zone newzone = new Zone(args[1], this.sender.getWorld().getName(), States.locations,
+							Boolean.parseBoolean(args[2]), this.plug);
+					if (newzone.create()) {
+						this.send("[&aSUCCESS&r] Successfully set a special zone.");
+					} else {
+						this.send("[&cFAILED&r] " + newzone.error);
+					}
+					break;
+
+				case "reload":
+					this.plug.reloadConfig();
+					break;
+
+				default:
+					return false;
 			}
+
 			return true;
 		}
 
