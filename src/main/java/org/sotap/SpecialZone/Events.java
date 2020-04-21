@@ -31,6 +31,7 @@ public class Events implements Listener {
 		if (Utils.isInZoneGlobal(x, y, z, this.plug.getConfig())) {
 			event.setKeepInventory(true);
 			event.setKeepLevel(true);
+			//do not forget clear exp which can not be clear by getDrops().clear()
 			event.getDrops().clear();
 			event.setDroppedExp(0);
 			event.getEntity().sendMessage("Your inventory was kept up!");
@@ -39,10 +40,11 @@ public class Events implements Listener {
 
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
-		Action action = event.getAction();
-		ItemStack item = event.getItem();
-		Material mat =item.getType();
-		if (item == null||(action == Action.LEFT_CLICK_BLOCK && mat == Material.ARROW)) {
+		if(event.getHand().name().equals("HAND")){
+			Action action = event.getAction();
+			ItemStack item = event.getItem();
+			Material mat =item.getType();
+		if (item == null) {
 			// do nothing
 		} else {
 			if (action == Action.RIGHT_CLICK_BLOCK && mat == Material.ARROW) {
@@ -56,4 +58,5 @@ public class Events implements Listener {
 			}
 		}
 	}
+}
 }

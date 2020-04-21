@@ -4,7 +4,7 @@ version: "1"
 api: "1.15"
 author: constant137
 commands: 
-  setspecialzone: 
-    permission: sz.set
+  specialzone: 
+    permission: sz.create
     description: Set a specialzone.
-    usage: /setspecialzone <zonename> <ignore_y?>
+    usage: /specialzone create <zonename> <ignore_y?>
