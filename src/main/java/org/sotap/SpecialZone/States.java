@@ -14,7 +14,10 @@ public class States {
 
     public void nextSelectState() {
         String selectStatePrev = States.selectState;
-        selectState = selectStatePrev == "" ? "selection-1" : (selectStatePrev == "selection-1" ? "selection-2" : (selectStatePrev == "selection-2" ? "" : ""));
+        if (selectStatePrev == "selection-2") {
+            this.resetSelectState();
+        }
+        selectState = selectStatePrev == "" ? "selection-1" : (selectStatePrev == "selection-1" ? "selection-2" : "");    
     }
 
     public void resetSelectState() {
