@@ -4,13 +4,15 @@ package org.sotap.SpecialZone;
 import java.math.BigDecimal;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class CommandHandler implements CommandExecutor {
 	private SpecialZone plug;
-	private CommandSender sender;
+	private Player sender;
 
 	public CommandHandler(SpecialZone plug) {
 		this.plug = plug;
@@ -28,7 +30,7 @@ public class CommandHandler implements CommandExecutor {
 		return true;
 	}
 
-	public boolean validateLength(String[] args, CommandSender sender, Integer n) {
+	public boolean validateLength(String[] args, Integer n) {
 		// check if there are enough arguments
 		if (args.length != n) {
 			this.send("[&cFAILED&r] Unexpected argument length, expected " + n.toString() + " but got "
@@ -38,7 +40,7 @@ public class CommandHandler implements CommandExecutor {
 		return true;
 	}
 
-	public boolean isNumericBetween(String[] args, CommandSender sender, Integer j, Integer k) {
+	public boolean isNumericBetween(String[] args, Integer j, Integer k) {
 		// check if the argument types are correct
 		for (int i = j; i <= k; i++) {
 			String arg = args[i];
@@ -56,32 +58,22 @@ public class CommandHandler implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		this.sender = sender;
-		// both player and console can use the command
-
-		if (cmd.getName().equalsIgnoreCase("setspecialzone")) {
-			// prevent out of bounds exception
-			if (args.length == 0) {
-				return false;
-			}
-		
+		this.sender = (Player) sender;
+		if (cmd.getName().equalsIgnoreCase("setspecialzone")) {	
 			if (args[0] == "reload") {
 				this.plug.reloadConfig();
 				return true;
 			}
 
-			if (!this.validateLength(args, sender, 9)) {
+			if (!this.validateLength(args, 9) || args.length != 2) {
 				return false;
 			}
-
-			if (!this.isNumericBetween(args, sender, 1, 6)) {
-				return false;
+			
+			if (!(States.locations.get(1) instanceof Location && States.locations.get(2) instanceof Location)) {
+				this.send("[&cFAILED&r] You are not selecting the zone correctly.");
 			}
-			// usage: /setSpecialZone <zonename> <x1> <x2> <z1> <z2> <world_name>
-
-			// it will automatically create the value path if not exists, so there is no
-			// need to create it manually.
-			Zone newzone = new Zone(args, this.plug);
+			// usage: /setSpecialZone <zonename> <ignore_Y>
+			Zone newzone = new Zone(args[0], this.sender.getWorld().getName(), States.locations, Boolean.parseBoolean(args[1]), this.plug);
 			if(newzone.create()) {
 				this.send("[&aSUCCESS&r] Successfully set a special zone.");
 			} else {
