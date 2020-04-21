@@ -59,7 +59,7 @@ public class CommandHandler implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		this.sender = (Player) sender;
-		if (cmd.getName().equalsIgnoreCase("setspecialzone")) {
+		if (cmd.getName().equalsIgnoreCase("specialzone")) {
 			if (args.length != 3) {
 				return false;
 			}
