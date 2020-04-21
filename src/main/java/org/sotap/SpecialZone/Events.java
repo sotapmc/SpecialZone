@@ -32,6 +32,7 @@ public class Events implements Listener {
 			event.setKeepInventory(true);
 			event.setKeepLevel(true);
 			event.getDrops().clear();
+			event.setDroppedExp(0);
 			event.getEntity().sendMessage("Your inventory was kept up!");
 		}
 	}
@@ -40,10 +41,10 @@ public class Events implements Listener {
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		Action action = event.getAction();
 		ItemStack item = event.getItem();
-		if (item == null) {
+		Material mat =item.getType();
+		if (item == null||(action == Action.LEFT_CLICK_BLOCK && mat == Material.ARROW)) {
 			// do nothing
 		} else {
-			Material mat = item.getType();
 			if (action == Action.RIGHT_CLICK_BLOCK && mat == Material.ARROW) {
 				this.state.nextSelectState();
 				Block block = event.getClickedBlock();
