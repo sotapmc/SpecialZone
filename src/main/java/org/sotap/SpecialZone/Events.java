@@ -42,17 +42,17 @@ public class Events implements Listener {
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		if(event.getHand().name().equals("HAND")){
 			Action action = event.getAction();
-			ItemStack item = event.getItem();
-			Material mat =item.getType();
-		if (item == null) {
-			// do nothing
-		} else {
-			if (action == Action.RIGHT_CLICK_BLOCK && mat == Material.ARROW) {
-				this.state.nextSelectState();
-				Block block = event.getClickedBlock();
-				Location location = block.getLocation();
-				this.state.storeLocation(location);
-				event.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', ("[&bACTION&r] Successfully select the &a" + (States.selectState == 1 ? "first" : "second") + "&r point of the zone." + (States.selectState == 2 ? " &aEnter &e/specialzone create <name> <ignoreY?>&a to create." : ""))));
+			ItemStack item = event.getItem();		
+			if (item == null) {
+				// do nothing
+			} else {
+				Material mat =item.getType();
+				if (action == Action.RIGHT_CLICK_BLOCK && mat == Material.ARROW) {
+					this.state.nextSelectState();
+					Block block = event.getClickedBlock();
+					Location location = block.getLocation();
+					this.state.storeLocation(location);
+					event.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', ("[&bACTION&r] Successfully select the &a" + (States.selectState == 1 ? "first" : "second") + "&r point of the zone." + (States.selectState == 2 ? " &aEnter &e/specialzone create <name> <ignoreY?>&a to create." : ""))));
 			} else {
 				this.state.resetSelectState();
 			}
