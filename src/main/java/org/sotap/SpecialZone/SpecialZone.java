@@ -15,7 +15,7 @@ public class SpecialZone extends JavaPlugin {
         this.saveDefaultConfig();
         this.getLogger().info("SpecialZone has been enabled successfully.");
         getServer().getPluginManager().registerEvents(new Events(this, new States()), this); // register events
-        Bukkit.getPluginCommand("setspecialzone").setExecutor(new CommandHandler(this)); // register command
+        Bukkit.getPluginCommand("specialzone").setExecutor(new CommandHandler(this)); // register command
     }  
   
     @Override      
